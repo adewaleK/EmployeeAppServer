@@ -34,13 +34,15 @@ namespace EmployeeApp
             services.AddSwaggerGen(
                c =>
                {
-                   c.SwaggerDoc("v1", new OpenApiInfo { Title = "AutoMatJobListing", Version = "v1" });
+                   c.SwaggerDoc("v1", new OpenApiInfo { Title = "EmployeeManager", Version = "v1" });
                }
             );
             services.AddDbContext<DataContext>((options) => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddAutoMapper();
+            services.AddCors(options => options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod()
+           ));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,6 +54,7 @@ namespace EmployeeApp
             }
 
             app.UseRouting();
+            app.UseCors();
 
             app.UseAuthorization();
 
